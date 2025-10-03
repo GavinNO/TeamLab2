@@ -1,6 +1,6 @@
 import CounterCard from "./CounterCard";
 
-export default function CounterList({ values, onUpdate, onReset, onDelete }) {  
+export default function TaskList({ values, onUpdate, onReset, onDelete }) {  
   return ( 
     <div style={{ textAlign: "center", marginTop: "3rem", fontFamily: "Arial" }}>
       {values.map((counter) => (

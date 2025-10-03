@@ -1,4 +1,4 @@
-export default function CounterCard({ id, name, value, onUpdate, onReset, onDelete }) {  
+export default function TaskItem({ id, name, value, onUpdate, onReset, onDelete }) {  
   return ( 
     <div style={{ textAlign: "center", marginTop: "3rem", fontFamily: "Arial" }}> 
       <h1>{name}</h1> 

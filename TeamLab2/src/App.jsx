@@ -1,55 +1,55 @@
 import { useState, useEffect } from "react";
-import CounterList from "./components/CounterList";
+import taskList from "./components/TaskList";
 import Header from "./components/Header";
-import AddCounterForm from "./components/AddCounterForm";
+import AddTaskForm from "./components/AddTaskForm";
 
 export default function App() {  
-  const [counterList, setCounters] = useState(() => {
+  const [taskList, setTasks] = useState(() => {
     // load from localStorage
-    const saved = localStorage.getItem("counters");
+    const saved = localStorage.getItem("tasks");
     return saved ? JSON.parse(saved) : [];
   });
 
   // persist to localStorage
   useEffect(() => {
-    localStorage.setItem("counters", JSON.stringify(counterList));
-  }, [counterList]);
+    localStorage.setItem("tasks", JSON.stringify(taskList));
+  }, [taskList]);
 
-  function addCounter(name) {
-    if (!counterList.some(c => c.name === name)) {
-      setCounters([...counterList, { id: Date.now(), name, value: 0 }]);
+  function addTask(name) {
+    if (!taskList.some(c => c.name === name)) {
+      setTasks([...taskList, { id: Date.now(), name, value: 0 }]);
     } else {
-      alert("Counter already exists!");
+      alert("Task already exists!");
     }
   }
 
-  function updateCounter(id, change) {
-    setCounters(counterList.map(c => 
+  function updateTask(id, change) {
+    setTasks(taskList.map(c => 
       c.id === id ? { ...c, value: c.value + change } : c
     ));
   }
 
-  function resetCounter(id) {
-    setCounters(counterList.map(c => 
+  function resetTask(id) {
+    setTasks(taskList.map(c => 
       c.id === id ? { ...c, value: 0 } : c
     ));
   }
 
-  function deleteCounter(id) {
-    setCounters(counterList.filter(c => c.id !== id));
+  function deleteTask(id) {
+    setTasks(taskList.filter(c => c.id !== id));
   }
 
-  const total = counterList.reduce((sum, c) => sum + c.value, 0);
+  const total = taskList.reduce((sum, c) => sum + c.value, 0);
 
   return ( 
     <div style={{ textAlign: "center", marginTop: "3rem", fontFamily: "Arial" }}> 
       <Header total={total} />
-      <AddCounterForm onAction={addCounter} />
-      <CounterList 
-        values={counterList} 
-        onUpdate={updateCounter} 
-        onReset={resetCounter}
-        onDelete={deleteCounter}
+      <AddTaskForm onAction={addTask} />
+      <taskList 
+        values={taskList} 
+        onUpdate={updateTask} 
+        onReset={resetTask}
+        onDelete={deleteTask}
       />
     </div> 
   ); 
