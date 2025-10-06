@@ -1,55 +1,26 @@
-// src/components/AddTaskForm.jsx
-import { useState } from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import App from "../src/App";
+import "@testing-library/jest-dom";
 
-export default function AddTaskForm({ onAdd }) {
-  const [text, setText] = useState("");
+test("adds a new task to a list", () => {
+  render(<App />);
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (text.trim().length < 3) return; // ✅ Disable short entries
-    onAdd(text);
-    setText(""); // ✅ Clear input
-  }
+  // Add new list
+  const inputList = screen.getByPlaceholderText(/enter list name/i);
+  const addListBtn = screen.getByRole("button", { name: /add list/i });
+  fireEvent.change(inputList, { target: { value: "Test List" } });
+  fireEvent.click(addListBtn);
 
-  return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        display: "flex",
-        gap: "0.5rem",
-        justifyContent: "center",
-        marginBottom: "1.5rem",
-      }}
-    >
-      <input
-        type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Add a new task..."
-        aria-label="Task name"
-        style={{
-          flex: 1,
-          padding: "0.6rem",
-          borderRadius: "8px",
-          border: "1px solid #ccc",
-          fontSize: "1rem",
-        }}
-      />
-      <button
-        type="submit"
-        disabled={text.trim().length < 3}
-        style={{
-          padding: "0.6rem 1rem",
-          borderRadius: "8px",
-          border: "none",
-          backgroundColor: text.trim().length < 3 ? "#999" : "#646cff",
-          color: "white",
-          cursor: text.trim().length < 3 ? "not-allowed" : "pointer",
-          fontWeight: "bold",
-        }}
-      >
-        Add
-      </button>
-    </form>
-  );
-}
+  // Open list
+  const openButton = screen.getByText(/open/i);
+  fireEvent.click(openButton);
+
+  // Add new task
+  const inputTask = screen.getByPlaceholderText(/enter task name/i);
+  const addTaskBtn = screen.getByRole("button", { name: /add task/i });
+  fireEvent.change(inputTask, { target: { value: "First Task" } });
+  fireEvent.click(addTaskBtn);
+
+  // Verify new task appears
+  expect(screen.getByText("First Task")).toBeInTheDocument();
+});
