@@ -1,13 +1,28 @@
-export default function TaskItem({ id, name, value, onUpdate, onReset, onDelete }) {  
-  return ( 
-    <div style={{ textAlign: "center", marginTop: "3rem", fontFamily: "Arial" }}> 
-      <h1>{name}</h1> 
-      <h2>Count: {value}</h2>
-      <button onClick={() => onUpdate(id, 1)}>Increment</button> 
-      <button onClick={() => onUpdate(id, -1)}>Decrement</button> 
-      <button onClick={() => onReset(id)}>Reset</button>
-      <button onClick={() => onDelete(id)} style={{ color: "red" }}>Delete</button>
-      {value < 0 && <p style={{ color: "red" }}>Careful! Negative count!</p>}
-    </div> 
-  ); 
+export default function TaskItem({ id, listId, text, done, onToggle, onDelete }) {
+  const style = {
+    textDecoration: done ? "line-through" : "none",
+    color: done ? "gray" : "black",
+    marginBottom: "0.5rem",
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "0.5rem",
+      }}
+    >
+      <input
+        type="checkbox"
+        checked={done}
+        onChange={() => onToggle(listId, id)}
+      />
+      <span style={style}>{text}</span>
+      <button onClick={() => onDelete(listId, id)} style={{ background: "crimson" }}>
+        Delete
+      </button>
+    </div>
+  );
 }

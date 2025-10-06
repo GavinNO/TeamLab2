@@ -1,20 +1,20 @@
-import CounterCard from "./CounterCard";
+import TaskItem from "./TaskItem";
 
-export default function TaskList({ values, onUpdate, onReset, onDelete }) {  
-  return ( 
-    <div style={{ textAlign: "center", marginTop: "3rem", fontFamily: "Arial" }}>
-      {values.map((counter) => (
-        <CounterCard 
-          key={counter.id} 
-          id={counter.id}
-          name={counter.name} 
-          value={counter.value} 
-          onUpdate={onUpdate}
-          onReset={onReset}
-          onDelete={onDelete}
+export default function TaskList({ tasks, listId, onToggleTask, onDeleteTask }) {
+  return (
+    <div style={{ marginTop: "1rem" }}>
+      {tasks.map((task) => (
+        <TaskItem
+          key={task.id}
+          id={task.id}
+          listId={listId}
+          text={task.text}
+          done={task.done}
+          onToggle={onToggleTask}
+          onDelete={onDeleteTask}
         />
       ))}
-      {values.length === 0 && <p style={{ color: "red" }}>No counters yet</p>}
+      {tasks.length === 0 && <p>No tasks to show.</p>}
     </div>
-  ); 
+  );
 }
