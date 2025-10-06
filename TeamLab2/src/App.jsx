@@ -1,56 +1,97 @@
-import { useState, useEffect } from "react";
-import taskList from "./components/TaskList";
+import { useState } from "react";
+import useLocalStorage from "./hooks/useLocalStorage";
 import Header from "./components/Header";
-import AddTaskForm from "./components/AddTaskForm";
+import ListDashboard from "./components/ListDashboard";
+import ListPage from "./components/ListPage";
 
-export default function App() {  
-  const [taskList, setTasks] = useState(() => {
-    // load from localStorage
-    const saved = localStorage.getItem("tasks");
-    return saved ? JSON.parse(saved) : [];
-  });
+export default function App() {
+  const [lists, setLists] = useLocalStorage("lists", [
+    {
+      id: Date.now(),
+      name: "Example List",
+      tasks: [
+        { id: 1, text: "Example task 1", done: false },
+        { id: 2, text: "Example task 2", done: true },
+      ],
+    },
+  ]);
 
-  // persist to localStorage
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(taskList));
-  }, [taskList]);
+  const [selectedListId, setSelectedListId] = useState(null);
 
-  function addTask(name) {
-    if (!taskList.some(c => c.name === name)) {
-      setTasks([...taskList, { id: Date.now(), name, value: 0 }]);
-    } else {
-      alert("Task already exists!");
+  // --- List Actions ---
+  function addList(name) {
+    const newList = { id: Date.now(), name, tasks: [] };
+    setLists([...lists, newList]);
+  }
+
+  function deleteList(listId) {
+    if (confirm("Delete this list?")) {
+      setLists(lists.filter((l) => l.id !== listId));
+      if (selectedListId === listId) setSelectedListId(null);
     }
   }
 
-  function updateTask(id, change) {
-    setTasks(taskList.map(c => 
-      c.id === id ? { ...c, value: c.value + change } : c
-    ));
+  // --- Task Actions ---
+  function addTask(listId, text) {
+    setLists(
+      lists.map((l) =>
+        l.id === listId
+          ? {
+              ...l,
+              tasks: [...l.tasks, { id: Date.now(), text, done: false }],
+            }
+          : l
+      )
+    );
   }
 
-  function resetTask(id) {
-    setTasks(taskList.map(c => 
-      c.id === id ? { ...c, value: 0 } : c
-    ));
+  function toggleTask(listId, taskId) {
+    setLists(
+      lists.map((l) =>
+        l.id === listId
+          ? {
+              ...l,
+              tasks: l.tasks.map((t) =>
+                t.id === taskId ? { ...t, done: !t.done } : t
+              ),
+            }
+          : l
+      )
+    );
   }
 
-  function deleteTask(id) {
-    setTasks(taskList.filter(c => c.id !== id));
+  function deleteTask(listId, taskId) {
+    setLists(
+      lists.map((l) =>
+        l.id === listId
+          ? { ...l, tasks: l.tasks.filter((t) => t.id !== taskId) }
+          : l
+      )
+    );
   }
 
-  const total = taskList.reduce((sum, c) => sum + c.value, 0);
+  // --- Rendering ---
+  const selectedList = lists.find((l) => l.id === selectedListId) || null;
 
-  return ( 
-    <div style={{ textAlign: "center", marginTop: "3rem", fontFamily: "Arial" }}> 
-      <Header total={total} />
-      <AddTaskForm onAction={addTask} />
-      <taskList 
-        values={taskList} 
-        onUpdate={updateTask} 
-        onReset={resetTask}
-        onDelete={deleteTask}
-      />
-    </div> 
-  ); 
+  return (
+    <div style={{ textAlign: "center", fontFamily: "Arial" }}>
+      <Header />
+      {selectedListId === null ? (
+        <ListDashboard
+          lists={lists}
+          onAddList={addList}
+          onSelectList={setSelectedListId}
+          onDeleteList={deleteList}
+        />
+      ) : (
+        <ListPage
+          list={selectedList}
+          onBack={() => setSelectedListId(null)}
+          onAddTask={addTask}
+          onToggleTask={toggleTask}
+          onDeleteTask={deleteTask}
+        />
+      )}
+    </div>
+  );
 }
