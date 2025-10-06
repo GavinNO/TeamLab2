@@ -20,7 +20,11 @@ function AddListForm({ onAdd }) {
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <button type="submit" disabled={!isValid}>Add List</button>
+      <button type="submit" disabled={!isValid}>
+        Add List
+      </button>
     </form>
   );
 }
+
+export default AddListForm;

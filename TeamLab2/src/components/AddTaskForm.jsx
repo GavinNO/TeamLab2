@@ -20,7 +20,11 @@ function AddTaskForm({ onAdd }) {
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <button type="submit" disabled={!isValid}>Add Task</button>
+      <button type="submit" disabled={!isValid}>
+        Add Task
+      </button>
     </form>
   );
 }
+
+export default AddTaskForm;
