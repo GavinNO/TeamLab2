@@ -1,13 +1,26 @@
-export default function CounterCard({ id, name, value, onUpdate, onReset, onDelete }) {  
-  return ( 
-    <div style={{ textAlign: "center", marginTop: "3rem", fontFamily: "Arial" }}> 
-      <h1>{name}</h1> 
-      <h2>Count: {value}</h2>
-      <button onClick={() => onUpdate(id, 1)}>Increment</button> 
-      <button onClick={() => onUpdate(id, -1)}>Decrement</button> 
-      <button onClick={() => onReset(id)}>Reset</button>
-      <button onClick={() => onDelete(id)} style={{ color: "red" }}>Delete</button>
-      {value < 0 && <p style={{ color: "red" }}>Careful! Negative count!</p>}
-    </div> 
-  ); 
+export default function ListCard({ id, name, tasks, onSelect, onDelete }) {
+  const total = tasks.length;
+  const completed = tasks.filter((t) => t.done).length;
+
+  return (
+    <div
+      style={{
+        background: "#fff",
+        padding: "1rem",
+        borderRadius: "10px",
+        boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+        width: "220px",
+        textAlign: "center",
+      }}
+    >
+      <h3>{name}</h3>
+      <p>{completed} / {total} completed</p>
+      <div style={{ display: "flex", justifyContent: "center", gap: "0.5rem" }}>
+        <button onClick={onSelect}>Open</button>
+        <button onClick={onDelete} style={{ background: "crimson" }}>
+          Delete
+        </button>
+      </div>
+    </div>
+  );
 }
