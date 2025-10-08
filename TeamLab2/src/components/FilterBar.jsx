@@ -1,6 +1,10 @@
 export default function FilterBar({ filter, setFilter }) {
+  // List of "task states" for user filtering
   const filters = ["all", "active", "completed"];
 
+  // Depending on what filter is chosen, show all tasks depending on completion status
+  // Three buttons "All", "Active", "Completed"
+  // On a click, find all tasks that are associated with the choice given
   return (
     <div style={{ marginTop: "1rem", display: "flex", justifyContent: "center", gap: "1rem" }}>
       {filters.map((f) => (
