@@ -16,7 +16,7 @@ function AddTaskForm({ onAdd }) {
   const isValid = name.trim().length >= 3;
 
   /*  
-  //Determine the user's new task name
+  Determine the user's new task name
   A text box asks the user to enter a name, and a separate button will submit the choice
   */
   return (

@@ -3,11 +3,13 @@ export default function ListCard({ id, name, tasks, onSelect, onDelete }) {
   const total = tasks.length;
   const completed = tasks.filter((t) => t.done).length;
 
-  // Display a card that gives a detailed list breakdown for the user
-  // Display the name
-  // Show how many tasks are completed out of the total number
-  // An "open" button brings the user to edit the list
-  // A "delete" button removes the list entirely
+  /*
+  Display a card that gives a detailed list breakdown for the user
+  1. Display the name
+  2. Show how many tasks are completed out of the total number
+  3. An "open" button brings the user to edit the list
+  4. A "delete" button removes the list entirely
+  */
   return (
     <div
       style={{

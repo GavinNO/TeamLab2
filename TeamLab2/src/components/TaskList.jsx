@@ -1,5 +1,6 @@
 import TaskItem from "./TaskItem";
 
+// Function that controls information from each task within a list
 export default function TaskList({ tasks, listId, onToggleTask, onDeleteTask }) {
   return (
     <div style={{ marginTop: "1rem" }}>
